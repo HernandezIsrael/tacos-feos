@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Taco Recipes</title>
+    <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+  </head>
+
+  <body>
+    <h1>Taco Feo 🌮</h1>
+
+    <form action="/recipe" method="POST" class="buttons">
+      <button type="submit" value="chicken" name="choice">🍗</button>
+      <button type="submit" value="beef" name="choice">🥩</button>
+      <button type="submit" value="fish" name="choice">🐟</button>
+    </form>
+    <div class="recipeContainer" class="hidden">
+      <% if(locals.recipe){ %>
+
+      <h2 class="recipeTitle"><%= recipe.name %></h2>
+
+      <h3>Ingredientes:</h3>
+      <ul class="ingredientsList">
+        <li>
+          <%- recipe.ingredients.protein.name %>, <%-
+          recipe.ingredients.protein.preparation %>
+        </li>
+        <li>
+          <%- recipe.ingredients.salsa.name %> ( Picor: <%-
+          recipe.ingredients.salsa.spiciness %>)
+        </li>
+      </ul>
+
+      <h3>Toppings:</h3>
+
+      <% const topping = recipe.ingredients.toppings[0];
+      recipe.ingredients.toppings.forEach(t=>{ %>
+      <b><%- `${t.name} (${t.quantity})` %></b>
+      <ul class="ingredientsList">
+        <% t.ingredients.forEach(i =>{ %>
+        <li><%- i %></li>
+        <% }); %>
+      </ul>
+      <% }) %> <% } else{ %>
+      <h2>Pick your favourite taco ingredient 👆</h2>
+      <% } %>
+    </div>
+  </body>
+</html>
