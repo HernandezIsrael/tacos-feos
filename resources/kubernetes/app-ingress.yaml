@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taquito-ingress
+spec:
+  #ingressClassName: nginx
+  rules:
+    - host: k8s.nuup.ninja
+      http:
+        paths:
+          - path: /tquito-feo
+            pathType: Prefix
+            backend:
+              service:
+                name: taquito-service # SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO
+                port:
+                  number: 3000 # PUERTO DEL SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO

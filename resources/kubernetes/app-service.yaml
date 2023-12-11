@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: taquito-service
+spec:
+  selector:
+    app: taquito-app
+  ports:
+    - protocol: TCP
+      port: 3000 # PUERTO POR EL QUE EL SERVICIO VA A ESTAR ESCUCHANDO
+      targetPort: 3000 # PUERTO AL QUE SE VA A DIRIGIR EL TRÁFICO QUE ENTRA POR "PORT"

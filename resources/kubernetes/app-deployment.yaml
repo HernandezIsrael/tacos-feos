@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taquito-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taquito-app
+  template:
+    metadata:
+      labels:
+        app: taquito-app
+    spec:
+      containers:
+      - name: taquito-feo
+        image: pxrsival/taquito-feo:1.0
+        ports:
+        - containerPort: 3000
