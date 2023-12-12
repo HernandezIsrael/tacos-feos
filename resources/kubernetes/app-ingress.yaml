@@ -5,10 +5,10 @@ metadata:
 spec:
   #ingressClassName: nginx
   rules:
-    - host: k8s.nuup.ninja
+    - host: mytest.ingress.com
       http:
         paths:
-          - path: /tquito-feo
+          - path: /taquito-feo
             pathType: Prefix
             backend:
               service:

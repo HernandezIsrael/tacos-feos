@@ -13,7 +13,7 @@ spec:
         app: taquito-app
     spec:
       containers:
-      - name: taquito-feo
+      - name: taquito-container
         image: pxrsival/taquito-feo:1.0
         ports:
         - containerPort: 3000
