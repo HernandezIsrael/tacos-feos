@@ -8,7 +8,7 @@ spec:
     - host: mytest.ingress.com
       http:
         paths:
-          - path: /taquito-feo
+          - path: /
             pathType: Prefix
             backend:
               service:
