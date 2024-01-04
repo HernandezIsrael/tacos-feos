@@ -1,6 +1,9 @@
 # Usa la imagen oficial de Node.js como base
 FROM node:20.9.0
 
+# Definimos las variables de entorno necesarias
+ENV NODE_PORT=3000
+
 # Establece el directorio de trabajo en la imagen
 WORKDIR /usr/src/app
 
@@ -14,7 +17,7 @@ RUN npm install
 COPY . .
 
 # Expone el puerto en el que tu aplicación se ejecutará
-EXPOSE 3000
+EXPOSE ${NODE_PORT}
 
 # Comando para iniciar tu aplicación
 CMD ["node", "index.js"]
