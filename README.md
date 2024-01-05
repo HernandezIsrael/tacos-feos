@@ -1,4 +1,4 @@
-# Taquitos Feos
+# El Taquito Feo 🌮
 
 ### Getting Started
 
@@ -7,14 +7,13 @@ Este repositorio contiene la definición de la aplicación de Taquitos Feos, un 
 ### Contenido
 
 - [Happy Path](#happy-path-)
-- [Prepara tu área de trabajo](#conoce-el-área-de-trabajo-️)
-- [Variables de entorno](#variables-️de-entorno-)
-- [Recursos Docker](#recursos-docker-)
-- [Recursos Kubernetes](#recursos-kubernetes-️)
-- [Recursos OpenShift](#redhat-️openshift-)
+- [Conoce el área de trabajo](#conoce-el-área-de-trabajo-️)
+- [Variables de entorno](#variables-de-entorno-%EF%B8%8F)
+- [Utilizando Docker](#utilizando-docker-)
+- [Utilizando Kubernetes](#utilizando-kubernetes-️)
+- [Utilizando OpenShift](#utilizando-openshift-)
 - [It Works!](#it-works-)
-- [Recursos API para DISQUERA](#recursos-api-para-disquera-)
-- [Recursos API para ARTISTA](#recursos-api-para-artista-)
+- [Recursos API para RECIPES](#recursos-api-para-recipes-)
 - [Información de Contacto](#información-de-contacto)
 
 ### Version
@@ -26,7 +25,7 @@ Este repositorio contiene la definición de la aplicación de Taquitos Feos, un 
 
 1. Utiliza los recursos de Docker, Kubernetes u OpenShift que se proporcionan en este documento y/o modificalos según tus necesidades.
 2. Sigue los pasos para desplegar tu app con docker, kubernetes u OpenShift.
-3. Verifica que está funcionando desde tu navegador.
+3. Verifica que está funcionando desde tu navegador, o
 4. Utiliza Postman para consumir los microservicios.
 
 # Conoce el área de trabajo 🗂️
@@ -36,22 +35,22 @@ Ubica los recursos dentro de las carpetas de este proyecto y utilizalos según t
 ```
 ├── 🗂️ tacos-feos
 │   ├── 🐳 Dockerfile
-│   ├── 📄 [RECURSOS DE LA APLICACIÓN]
+│   ├── 📄 [Recursos de la aplicación]
 │   ├── 🗂️ manifest
-│   │   ├── 📄 [RECURSOS KUBERNETES]
+│   │   ├── 📄 [Recursos Kubernetes]
 │   |   ├── 🗂️ open-shift
-│   |   |   ├── 📄 [RECURSOS OPENSHIFT]
+│   |   |   ├── 📄 [Recursos OpenShift]
 ```
 
 # Variables de entorno ⚙️
 
 El proyecto es sencillo, por lo que, de momento, únicamente tendrás que especificar el puerto por donde quieres que se ejecute la aplicación.
 
-```JSON
+```yaml
 NODE_PORT=3000
 ```
 
-# Opción Docker 🐳
+# Utilizando Docker 🐳
 
 ### Nodejs
 
@@ -61,7 +60,7 @@ Para esta versión se está utilizando la imagen de Nodejs en su versión 20.9.0
 <summary>💡 ¿Requieres modificar el Dockerfile?</summary>
 
 <p></p>
-<p>Si es así, vuelve a construir la imagen de docker y sube la imagen a dockerhub para utilizar tu propia versión:</p>
+<p>Si es así, realiza las modificaciones necesarias y vuelve a construir la imagen de docker. Sube la imagen a dockerhub para utilizar tu propia versión:</p>
 
 ```bash
 $ docker build build -t [USER]/taquito-feo:[TAG] .
@@ -72,7 +71,7 @@ $ docker push [USER]/taquito-feo:[TAG]
 </details>
 
 <details>
-<summary>💡 Crea el contenedor Docker</summary>
+<summary>💡 Crea el contenedor Docker.</summary>
 
 <p></p>
 <p>Si únicamente requieres usar Docker para ejecutar la aplicación, utiliza el siguiente comando:</p>
@@ -90,7 +89,7 @@ docker run --name "taquito-feo" -e "NODE_PORT=3001" -p 3001:3001 pxrsival/taquit
 </details>
 
 <details>
-<summary>💡 Accede a la aplicación</summary>
+<summary>💡 Accede a la aplicación.</summary>
 
 <p></p>
 <p>Cuando el contenedor se encuentre en ejecución, únicamente deberás acceder a la aplicación desde un navegador o consumiendo los endpoints para verificar que está funcionando correctamente (si actualizaste el puerto de NODE, no olvides actualizarlo también en tu URL).</p>
@@ -105,25 +104,18 @@ http://localhost:3000/recipes
 
 <p></p>
 
-# Recursos Kubernetes ☸️
+# Utilizando Kubernetes ☸️
 
-Utiliza los recursos proporcionados o modifícalos según tus nececidades.
+Utiliza los recursos proporcionados o modifícalos según tus nececidades. Puedes localizarlos dentro de la carpeta `manifest`.
 
-Los recursos se encuentran dentro de la carpeta `manifest`.
+<details>
+<summary>💡 Ver cómo aplicar los recursos de Kubernetes.</summary>
 
-```
-├── tacos-feos
-│   ├── manifest
-│   │   ├── app-deployment.yaml
-│   │   ├── app-service.yaml
-│   │   ├── app-ingress.yaml
-```
+<p></p>
 
-Aplica los recursos en el sigueinte orden:
+Primero deberás aplicar el `deployment`, luego el `service` y por último el `ingress`.
 
-1. Deployment
-2. Service
-3. Ingress
+Ejecuta los siguientes comandos para crear cada recurso:
 
 ```bash
 $ kubectl apply -f app-deployment.yaml
@@ -132,39 +124,57 @@ $ kubectl apply -f app-service.yaml
 
 $ kubectl apply -f app-ingress.yaml
 ```
+</details>
 
 <details>
-<summary>💡 Accede a la aplicación</summary>
+    
+<summary>💡 Verifica que su creación se completó correctamente.</summary>
+
+<p></p>
+
+Ejecuta los siguientes comandos para validar que los `pods`, `service` e `ingress` se han creado correctamente.
+
+```bash
+$ kubectl get pods ----> Para verificar los pods.
+
+$ kubectl get services ----> Para validar el service.
+
+$ kubectl get ingress ----> Para validar el ingress.
+```
+</details>
+
+<details>
+<summary>💡 Accede a la aplicación.</summary>
 
 <p></p>
 
 <p>Una vez aplicados todos los archivos YAML deberás acceder a la aplicación desde un navegador o consumiendo los endpoints para verificar que está funcionando correctamente (si actualizaste el puerto de NODE, no olvides actualizarlo también en tu URL).</p>
 
 ```bash
-http://localhost:3000
+http://[URL PROPORCIONADA POR EL INGRESS]:3000
 
-http://localhost:3000/recipes
+http://[URL PROPORCIONADA POR EL INGRESS]:3000/recipes
 ```
 
 </details>
 
 <p></p>
 
-# Redhat OpenShift 🎩
+# Utilizando OpenShift 🎩
 
 Utiliza los recursos proporcionados o modifícalos según tus nececidades.
 
 Los recursos se encuentran dentro de la carpeta `manifest/openshift`.
 
 ```
-├── tacos-feos
-│   ├── manifest
-│   │   ├── openshift
-│   │   |   ├── secrets
-│   │   |   ├── task
-│   │   |   ├── task-runs
-│   │   |   ├── pipeline
-│   │   |   ├── pipeline-runs
+├── 🗂️ tacos-feos
+│   ├── 🗂️ manifest
+│   │   ├── 🗂️ openshift
+│   │   |   ├── 🗂️ secrets
+│   │   |   ├── 🗂️ task
+│   │   |   ├── 🗂️ task-runs
+│   │   |   ├── 🗂️ pipeline
+│   │   |   ├── 🗂️ pipeline-runs
 ```
 
 ## Overview
@@ -176,31 +186,57 @@ flowchart LR
     git-clone --> list-directory --> build-and-push --> deploy
 ```
 
-> [!NOTE] > **GIT-CLONE:** En este paso se clonará el presente repositorio de github en el _namespace_ especificado.
+| GIT-CLONE    | LIST-DIRECTORY    | BUILD & PUSH    | DEPLOY    |
+| :------- | :------ | :------- | :------ |
+| Se clonará el presente repositorio de github en el _namespace_ especificado (user7).     | Listará los documentos usando el comendo `ls`. Servirá para validar que podemos acceder al código clonado en el paso anterior.  | Emplearemos la task BUILDAH para crear y empujar la imagen a Dockerhub. El propósito de este paso es tener una imagen nueva con los últimos cambios aplicados.     | Se desplegará la aplicación creando los recursos necesarios para que podamos acceder a la misma desde internet.  |
 
-> [!NOTE] > **LIST-DIRECTORY:** Este paso listará los documentos usando el comendo `ls`. Servirá para validar que podemos acceder al código clonado en el paso anterior.
-
-> [!NOTE] > **build-and-push:** En este punto emplearemos la task BUILDAH para crear y empujar la imagen a Dockerhub. El propósito de este paso es tener una imagen nueva con los últimos cambios aplicados.
-
-> [!NOTE] > **Deploy:** Por último, este paso desplegará la aplicación, creando los recursos necesarios para que podamos acceder a la misma desde internet.
 
 ## Requisitos específicos
 
-LOGIN AND SELECT NAMESPACE
-instalación de OC y TKN
-SECRETS
-NAMESPACE
-PVC
-WORKSPACE
+#### ✅ 1. Accede a OpenShift desde tu terminal 💻
 
-#### 1. Accede a OpenShift desde tu terminal 💻
+> [!IMPORTANT]
+> **Debes de tener OC y TKN instalados en tu equipo.**
 
-#### 2. Tus credenciales de Docker 🐳
+<details>
+<summary>💡 ¿Cómo descargar OC?</summary>
+
+<p></p>
+
+Desde la interfaz web de openShift da clic en el ícono `❓` >> `Command Line Tools` >> `oc - OpenShift Command Line Interface (CLI)`, selecciona la desgarga de acuerdo a tu sistema operativo y realiza la instalación.
+
+</details>
+
+<details>
+<summary>💡 ¿Cómo descargar TKN?</summary>
+
+<p></p>
+
+Desde la interfaz web de openShift da clic en el ícono `❓` >> `Command Line Tools` >> `tkn - OpenShift Pipeline Command Line Interface (CLI)`, selecciona la desgarga de acuerdo a tu sistema operativo y realiza la instalación.
+
+</details>
+
+<details>
+<summary>💡 ¿Cómo acceder a OpenShift desde la Terminal?</summary>
+
+<p></p>
+
+Desde la interfaz web de openShift da clic en el ícono `❓` >> `Command Line Tools` >> `Copy Login Command` >> `Login` >> `Display Token` y copia el comando:
+
+```bash
+oc login --token=[TOKEN QUE SE MUESTRA] --server=[SERVER QUE SE MUESTRA]
+```
+
+</details>
+
+
+
+#### ✅ 2. Tus credenciales de Docker 🐳
 
 Debido a que utilizaremos la Task `Buildah` necesitamos proporcionar nuestras credenciales de Docker a través de un `secret` para poder acceder a Dcokerhub desde la Task. No te preocupes, nadie tendrá acceso a tus credenciales. 😁
 
 <details>
-<summary>💡 Crea un SECRET con tu usuario y contraseña (token).</summary>
+<summary>💡 [Opción 1] Crea un SECRET con tu usuario y contraseña (token).</summary>
 
 <p></p>
 
@@ -210,7 +246,7 @@ Puedes optar por crear el `secret` directamente con un archivo YAML:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: basic-user-pass # Nombre del secret
+  name: mydockerhub # Nombre del secret
   annotations:
     tekton.dev/docker-0: https://gcr.io
 type: kubernetes.io/basic-auth
@@ -225,12 +261,12 @@ Para crearlo, ejecuta el siguiente comando:
 $ oc create -f secret-docker.yaml
 ```
 
-Desde la interfaz we, en el apartado correspondient a `secrets` podrás ver listado tu nuevo secreto.
+Desde la interfaz web, en el apartado correspondient a `secrets` podrás ver listado tu nuevo secreto.
 
 </details>
 
 <details>
-<summary>💡 Crea un SECRET usando el archivo de configurción almacenado en tu equipo (si tienes Docker instalado).</summary>
+<summary>💡 [Opción 2] Crea un SECRET usando el archivo de configurción almacenado en tu equipo (si tienes Docker instalado).</summary>
 
 <p></p>
 
@@ -246,13 +282,13 @@ $ oc create secret generic mydockerhub \
 
 </details>
 
-#### 3. Crea un service account 🔑
+#### ✅ 3. Crea un service account 🔑
 
 La Task BUILDAH necesita una SERVICE ACCOUNT para poder conectarse a nuestro Docker. En OpenShift, una
 SERVICE ACCOUNT (cuenta de servicio) es una entidad que permite a los procesos dentro de un pod autenticarse. En este caso requerimos que BUILDAH pueda autenticarse con Dockerhub haciendo uso de nuestro usuario y contraseña.
 
 <details>
-<summary>💡 Ver cómo crear una Service Account</summary>
+<summary>💡 Ver cómo crear una Service Account.</summary>
 
 <p></p>
 
@@ -264,9 +300,9 @@ metadata:
   name: tekton-pipeline
   namespace: tekton-demo
 imagePullSecrets:
-  - name: basic-user-pass # <-- Nombre del secret que acabamos de crear
+  - name: mydockerhub # <-- Nombre del secret que acabamos de crear
 secrets:
-  - name: basic-user-pass # <-- Nombre del secret que acabamos de crear
+  - name: mydockerhub # <-- Nombre del secret que acabamos de crear
 ```
 
 Ejecuta el siguiente comando para crear la SA.
@@ -277,40 +313,54 @@ $ oc create -f service-account.yaml
 
 </details>
 
-## Tasks
+## Creación de las Tasks ✏️
 
-#### 1. Git Clone 🐙
+No olvides trabajar en el namespace que te corresponde:
 
-La tarea git-clone clonará un repositorio desde la URL proporcionada hacia el Espacio de Trabajo de salida (output
-Workspace). Por defecto, el repositorio se clonará en la raíz de tu Espacio de Trabajo.
+```bash
+$ oc project user7
+```
 
-Para instalar la tarea “git-clone” ejecutamos el siguiente comando, el cual hace referencia al YAML correspondiente:
+<hr>
+
+### 1. Instala la tarea Git-Clone 🐙
+
+La tarea `git-clone` clonará un repositorio desde la URL proporcionada hacia el Espacio de Trabajo de salida (output
+Workspace). Por defecto, el repositorio se clonará en la raíz del workspace `output`.
+
+<details>
+
+<summary>💡 Ver cómo instalar Git-Clone.</summary>
+
+<p></p>
+
+Para instalar la tarea `git-clone` ejecutamos el siguiente comando, el cual hace referencia al YAML correspondiente:
 
 ```bash
 $ oc create -f https://raw.githubusercontent.com/openshift/tektoncd-pipeline-operator/master/deploy/resources/addons/02-clustertasks/git-clone/git-clone-task.yaml
 ```
 
-En **OpenShift**, en el aparatado correspondiente a **Tasks** deberá aparecer la tarea `git-clone` listada.
-
-O bien, ejecuta el siguiente comando para verificar la existencia de la tarea:
+Ejecuta el siguiente comando para verificar la existencia de la tarea:
 
 ```bash
 $ tkn task list
 ```
 
+</details>
+
 <details>
-<summary>💡 ¿Quieres verificar que "git-clone" está funcionando correctamente?</summary>
+<summary>💡 ¿Quieres verificar que Git-Clone está funcionando correctamente?</summary>
 
 <p></p>
 
-Puedes crear un Taskrun que ejecute la tarea recién creada. Para estoes necesario crear un archivo YAML con el aiguiente contenido:
+Puedes crear un Taskrun que ejecute la tarea recién creada. Para esto es crea un archivo YAML con el aiguiente contenido:
 
 ```YAML
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   generateName: git-clone- # Genera nombres basados en esta cadena
-  namespace: user7 #No olvides tu espacio de trabajo.
+  namespace: user7 #No olvides tu namespace
 spec:
   taskRef:
     kind: Task
@@ -323,7 +373,7 @@ spec:
     value: "true" #Elimina el contenido existente antes de clonar
   workspaces:
   # Espacios de trabajo utilizados durante la ejecución del TaskRun
-    - name: output # Espacio de trabajo llamado "output"
+    - name: output # Espacio de trabajo llamado "output" en donde se clonará el proyecto
       #emptyDir: {}
       persistentVolumeClaim:
         claimName: shared-workspace # Volumen persistente referenciado como "shared-workspace"
@@ -339,11 +389,19 @@ Por último, revisa desde la interfaz web que se ha creado la `taskrun` y que se
 
 </details>
 
-#### 2. List Directory 🗂️
+<hr>
 
-Para verificar que se ha clonado correctamente el código desde Github (workspace: output) hacia nuestro PVC (sharedworkspace)
-vamos a crear una tarea que liste el contenido (el código que acabamos de descargar). Para ello creamos la
-tarea “list-directory” utilizando el siguiente YAML:
+### 2. Tarea List Directory 🗂️
+
+Para verificar que se ha clonado correctamente el código desde Github en el workspace output, vamos a crear una tarea que liste el contenido (el código que acabamos de descargar) desde nuestro PVC (sharedworkspace).
+
+<details>
+
+<summary>💡 Crea la tarea List-Directory.</summary>
+
+<p></p>
+
+Crea un archivo `YAML` con el siguiente contenido:
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
@@ -375,7 +433,7 @@ spec:
       workingDir: "$(workspaces.directory.path)"
 ```
 
-Creamos la `task` con el siguiente comando:
+Crea la `task` con el siguiente comando:
 
 ```bash
 $ oc create -f task-list.yaml
@@ -387,12 +445,14 @@ Verifica desde la interfaz web la creación de la tarea, o bien, ejecutando el c
 $ tkn task list
 ```
 
+</details>
+
 <details>
-<summary>💡 ¿Quieres verificar que "list-directory" está funcionando correctamente?</summary>
+<summary>💡 ¿Quieres verificar que List-Directory está funcionando correctamente?</summary>
 
 <p></p>
 
-Puedes crear un Taskrun que ejecute la tarea recién creada. Para esto es necesario crear un archivo YAML con el aiguiente contenido:
+Puedes crear un Taskrun que ejecute la tarea recién creada. Para esto es necesario crear un archivo `YAML` con el aiguiente contenido:
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
@@ -419,28 +479,37 @@ Por último, revisa desde la interfaz web que se ha creado la `taskrun` y que el
 
 </details>
 
-#### 3. Build and Push 🐳
+<hr>
 
-Utilizaremos la Task `BUILDAH` para:
+### 3. Tarea Build & Push 🐳
 
-1. Constriur una imagen de docker con nuestro código clonado de Github a partir del `Dockerfile` que este mismo repositorio contiene.
+Instala la Task `BUILDAH` para:
+
+1. Constriur una imagen de docker con nuestro código clonado de Github a partir del `Dockerfile` que este repositorio contiene.
 2. Hacer PUSH de la imagen hacia DockerHub.
    La tarea Buildah construye el código fuente en una imagen de contenedor y luego la sube a un registro de
    contenedores.
 
 > [!IMPORTANT]
-> Recuerda que es necesario haber asociado correctamente las credenciales de Docker y haber creado el Service Account, ya que BUILDAH hace uso de ellas para poder empujar la imagen hacia Dockerhub.
+> Recuerda que es necesario haber asociado correctamente las credenciales de Docker y haber creado el Service Account, ya que BUILDAH hace uso de ellas para poder empujar la imagen hacia Dockerhub. Si aún no las tienes configuradas, revisa el apartado [REQUISITOS ESPECÍFICOS](#requisitos-específicos).
+
+<details>
+
+<summary>💡 ¿Cómo se instala Buildah?</summary>
+
+<p></p>
 
 Para instalar la TASK ejecutamos el siguiente comando:
 
 ```bash
 $ oc apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/buildah/0.6/raw
 ```
-
 No olvides listas las tareas con el comando `$ tkn task list` para visualizar que se ha creado correctamente.
 
+</details>
+
 <details>
-<summary>💡 ¿Quieres verificar que BUILDAH está funcionando correctamente?</summary>
+<summary>💡 ¿Quieres verificar que Buildah está funcionando correctamente?</summary>
 
 <p></p>
 
@@ -478,22 +547,32 @@ Por último, revisa desde la interfaz web que se ha creado la `taskrun` y que el
 
 </details>
 
-#### 4. Deployment 🚀
+<hr>
 
-Ya que tenemos nuestra imagen construida basada en el código clonado de nuestro repositorio, podemos aplicar un
-despliegue. Primero vamos a instalar la tarea `KUBERNETES-ACTIONS``. Esta es la tarea genérica para el CLI de kubectl
-que puede usarse para ejecutar todo tipo de comandos de k8s.
+### 4. Tarea para el Deployment 🚀
+
+Ya que tenemos nuestra imagen construida basada en el código clonado del repositorio, procederemos a desplegar la aplicación. 
+
+Vamos a instalar la tarea `Kubernetes Actions`. Esta es la tarea genérica para el CLI de kubectl que puede usarse para ejecutar todo tipo de comandos de k8s.
+
+<details>
+
+<summary>💡 Ver cómo instalar Kubernetes Actions</summary>
+
+<p></p>
+
 Para instalar esta TASK ejecutamos el siguiente comando:
 
 ```bash
 $ oc apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/kubernetes-actions/0.2/raw
-DEPLOYMENT
 ```
 
 No olvides ejecutar el comando `$ tkn task list` para verificar que la tarea se ha creado correctamente.
 
+</details>
+
 <details>
-<summary>💡 ¿Quieres verificar que KUBERNETES-ACTIONS está funcionando correctamente?</summary>
+<summary>💡 ¿Quieres verificar que Kubernetes Actions está funcionando correctamente?</summary>
 
 <p></p>
 
@@ -512,7 +591,7 @@ spec:
     - name: script
       value: |
         kubectl delete deployment taquito-from-hub
-        kubectl create deployment taquito-from-hub --image=docker.io/pxrsival/taquito-feo:1.0
+        kubectl create deployment taquito-from-hub --image=docker.io/pxrsival/taquito-feo:1.0 # <============ NOMBRE DE NUESTRO DEPLOYMENT
         echo "----------"
         kubectl get deployment
   workspaces:
@@ -527,12 +606,11 @@ Crea el taskrun utilizando el siguiente comando:
 
 ```bash
 $ oc create -f taskrun-deploy.yaml
+
+Esto tomará unos cuantos minutos...
 ```
 
 Por último, revisa desde la interfaz web que se ha creado la `taskrun` y que el contenido de este repositorio se muestra correctamente. Deberías ver el status `✅ succeded`.
-
-> [!NOTE]
-> Esta acción puede tomar un poco de tiempo ya que primero iniciará un POD basado en la imagen que indicamos y realizará las tareas necesarias para desplegar nuestra aplicación.
 
 </details>
 
@@ -552,7 +630,13 @@ flowchart LR
     git-clone --> list-directory --> build-and-push --> deploy
 ```
 
-Crearemos un archivo `yaml` con el siguiente contenido:
+<details>
+
+<summary>💡 Ver cómo se crea un Pipeline</summary>
+
+<p></p>
+
+Creamos un archivo `yaml` con el siguiente contenido:
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
@@ -634,14 +718,14 @@ Puedes ejecutar el siguiente comando para verificar que la Pipeline se ha creado
 $ tkn pipeline list
 ```
 
+</details>
+
 <details>
 <summary>💡 Verifica que la pipeline está funcionando correctamente con un Pipeline Run</summary>
 
 <p></p>
 
-Vamos a crear el PIPELINERUN que será el encargado de correr nuestra PIPELINE y que vaya paso a paso ejecutando cada uno de los stages o Task que ya creamos.
-El siguiente `yaml` contiene la definición del PIPELINERUN. En él se definen los espacios de
-trabajo que utilizarán cada una de las TASKS del PIPELINE. Adicionalmente si indica que se hará uso de la `Service Account` para poder hacer PUSH a la imagen de DOCKER.
+Vamos a crear el PipelineRun, que se encargará de ejecutar nuestra Pipeline, paso a paso, ejecutando cada uno de los stages o tareas que ya hemos creado. El siguiente archivo yaml contiene la definición del PipelineRun. En él, se establecen los espacios de trabajo que utilizarán cada una de las tasks en la Pipeline. Además, se indica que se utilizará el Service Account que hemos creado previamente, permitiendo realizar el PUSH a la imagen de Docker.
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
@@ -676,19 +760,21 @@ $ oc create -f pipeline-run.yaml
 
 Inmediatamente se comenzará a ejecutar la pipeline y con ella cada una de las tareas que ya hemos definido, desde clonar el repositorio de Github hasta desplegar la aplicación en OpenShift.
 
-> [!NOTE]
-> En este punto ya estamos más cerca de la automatización que buscamos. Ahora solo falta que la pipeline se ejecute de manera automática cada que ocurra un cambio en Github. Continúa con la creación del Trigger.
+_En este punto ya estamos más cerca de la automatización que buscamos. Ahora solo falta que la pipeline se ejecute de manera automática cada que ocurra un cambio en Github. Continúa con la creación del Trigger._
 
 </details>
 
-## Trigger 🚀
+## Trigger 🔥
 
-En este apartado se crearán los recursos necesarios para definir un Trigger que ejecutará la Pipeline definida en el paso anterior al detectar un cambio en el repositorio de Github.
+Un trigger ejecutará la Pipeline previamente definida en respuesta a cualquier cambio detectado en el repositorio de GitHub. Esta configuración, con ayuda de un `Webhook` de Github, automatiza por completo el proceso de despliegue, permitiendo que se inicie automáticamente cada vez que se detecta un cambio en el repositorio.
 
-> [!IMPORTANT]
-> Es necesario indicar un Webhook en el repositorio de Github para que OpenShift sea notificado de un cambio en el repositorio.
+<details>
 
-Es necesario crear los siguientes archivos YAML y crear los recursos en este orden de aparición.
+<summary>💡 Ver cómo crear un Trigger.</summary>
+
+<p></p>
+
+Es necesario crear los siguientes archivos `YAML` y crear los recursos en este orden de aparición.
 
 ```yaml
 ---
@@ -920,17 +1006,51 @@ $ oc create -f event-listener.yaml
 
 Si todo está correcto, cuando ocurra un cambio en este repositorio se disparará el trigger que a su vez ejecutará la pipeline encargada de clonar el código y desplegar la aplicación.
 
+</details>
+
+<details>
+
+<summary>💡 Ver cómo crear un Webhook</summary>
+
+<p></p>
+
+Un webhook permite que GitHub notifique a otras aplicaciones, como OpenShift, sobre eventos específicos, como un push a un repositorio; entonces el trigger de OpenShift es disaparado.
+
+En el apartado correspondiente a `Triggers`en Openshit, da clic sobre el que acabamos de crear (llamado `tekton-event-listener`) y en la pestaña `Details` ubica el cuadro de texto con la leyenda `URL`. Copia la dirección que aparece (deberá verse más o menos así):
+
+```bash
+http://el-tekton-event-listener-user7[...etc]
+```
+
+En el repositorio de Github, ubica la pestaña `Settings ⚙️` y, en el menú lateral, selecciona la opción `Webhooks`. Da clic en `Add Webhook` y pega la URL en el campo `Payload URL`. Configura el resto de preferencias y confirma con el botón `Add Webhook`.
+
+</details>
+
+> [!IMPORTANT]
+> Si todo está correcto, cuando ocurra un cambio en este repositorio se disparará el trigger que a su vez ejecutará la pipeline encargada de clonar el código y desplegar la aplicación.
+
+
+
 # It Works! ✅
 
 Puedes verificar que la aplicación funciona correctamente si intentas acceder a la URL proporcionada por OpenShift, Kubernetes o correspondiente al contenedor de Docker (según la opción que hayas decidido adoptar).
 
 ```bash
 [URL_DEL_APLICATIVO]/recipes
+```
+Algunos ejemplos:
 
-Por ejemplo, http://localhost:3000/recipes
+```bash
+http://localhost:3000/recipes
+```
+
+```bash
+http://openshifit-console-app.com/recipes
 ```
 
 # Recursos API para RECIPES 🌮
+
+### DOMINIOS 💾
 
 <details>
 <summary>💡 Estructura del dominio TACO.</summary>
@@ -998,6 +1118,8 @@ Por ejemplo, http://localhost:3000/recipes
 
 </details>
 
+### JSON {}
+
 <details>
 <summary>💡 Así se envían los datos en formato JSON (solo si el método HTTP lo requiere).</summary>
 
@@ -1056,11 +1178,36 @@ Si son varios datos, no olvides formatear correctamente:
   }
 ]
 ```
+</details>
+
+### TEST 🔥
+
+<details>
+
+<summary>💡 Así puedes probar la funcionalidad de los endpoints con POSTMAN</summary>
+
+<p></p>
+
+Aplica o modifica las siguientes configuraciones a POSTMAN:
+
+| Método: | POST                                |
+| :------ | :---------------------------------- |
+| URL:    | http:localhost:3000/api/recipes |
+| Body:   | Raw (JSON)                          |
+| Data:   | `{"id":"0004","type":"taco","name":"Taco de Spaguetti","price":2.99,"ingredients":{"protein":{"name":"Champiñones","preparation":"Con crema"},"salsa":{"name":"Crema de Champiñón","spiciness":"🔥"},"toppings":[{"name":"Champiñones","quantity":"1 taza","ingredients":["Champiñón blanco"]},{"name":"Crema agria","quantity":"1/2 taza","ingredients":["Crema deslactosada"]},{"name":"Queso","quantity":"2 cucharadas","ingredients":["Queso doble crema desmenuzado"]}]}}`           |
+
+#### Resultado
+
+El resultado deberá lucir como el siguiente:
+
+```json
+Se ha creado el taco feo de Taco de Spaguetti
+```
 
 </details>
 
 <details>
-<summary>💡 Así puedes probar la funcionalidad de los endpoints.</summary>
+<summary>💡 Así puedes probar la funcionalidad de los endpoints con CURL.</summary>
 
 <p></p>
 Para este ejemplo se empleará el método POST.
@@ -1108,26 +1255,9 @@ curl -X 'POST' \
   }
 }'
 ```
-
-#### Utilizando POSTMAN 🚀
-
-Aplica o modifica las siguientes configuraciones a POSTMAN:
-
-| Método: | POST                                |
-| :------ | :---------------------------------- |
-| URL:    | http:localhost:3000/api/recipes |
-| Body:   | Raw (JSON)                          |
-| Data:   | `{"id":"0004","type":"taco","name":"Taco de Spaguetti","price":2.99,"ingredients":{"protein":{"name":"Champiñones","preparation":"Con crema"},"salsa":{"name":"Crema de Champiñón","spiciness":"🔥"},"toppings":[{"name":"Champiñones","quantity":"1 taza","ingredients":["Champiñón blanco"]},{"name":"Crema agria","quantity":"1/2 taza","ingredients":["Crema deslactosada"]},{"name":"Queso","quantity":"2 cucharadas","ingredients":["Queso doble crema desmenuzado"]}]}}`           |
-
-#### Resultado
-
-El resultado deberá lucir como el siguiente:
-
-```json
-Se ha creado el taco feo de Taco de Spaguetti
-```
-
 </details>
+
+### Methods 💻
 
 #### Lista de métodos HTTP implementados.
 
